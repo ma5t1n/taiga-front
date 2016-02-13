@@ -957,7 +957,7 @@
             "POINTS": "Punkte",
             "CLIENT_REQUIREMENT": "Kunden Anforderung ",
             "TEAM_REQUIREMENT": "Team Anforderung ",
-            "IS_IOCAINE": "ist Iocaine ",
+            "IS_IOCAINE": "ist toxisch ",
             "TAGS": "Schlagwörter",
             "ATTACHMENTS": "Anhänge",
             "IS_DEPRECATED": "ist veraltet",
@@ -1016,7 +1016,7 @@
             "COMPLETED_POINTS": "vollständige<br />Punkte",
             "OPEN_TASKS": "offene<br />Aufgaben",
             "CLOSED_TASKS": "geschlossene<br />Aufgaben",
-            "IOCAINE_DOSES": "Iocaine<br />Dosen",
+            "IOCAINE_DOSES": "toxische<br />Aufgabe",
             "SHOW_STATISTICS_TITLE": "Statistik anzeigen",
             "TOGGLE_BAKLOG_GRAPH": "Zeige/Verstecke Burndowngraph"
         },
@@ -1105,10 +1105,10 @@
         "FIELDS": {
             "MILESTONE": "Sprint",
             "USER_STORY": "User-Story",
-            "IS_IOCAINE": "Ist Iocaine"
+            "IS_IOCAINE": "Ist toxisch"
         },
-        "ACTION_IOCAINE": "Locaine",
-        "TITLE_ACTION_IOCAINE": "Fühlen Sie sich von einer Aufgabe etwas erdrückt? Stellen Sie sicher, dass andere davon erfahren, indem Sie auf Locaine klicken, wenn Sie eine Aufgabe ändern. Es ist möglich, gegen dieses (fiktive) tödliche Gift immun zu werden, indem man kleine Mengen über einen Zeitraum hinweg einnimmt. Genauso, wie es möglich ist, besser in dem zu werden, was man tut, indem man gelegentlich zusätzliche  Herausforderungen annimmt!"
+        "ACTION_IOCAINE": "Toxic",
+        "TITLE_ACTION_IOCAINE": "Fühlen Sie sich von einer Aufgabe etwas erdrückt? Stellen Sie sicher, dass andere davon erfahren, indem Sie auf Gift klicken. Es ist möglich, gegen dieses (fiktive) tödliche Gift immun zu werden, indem man kleine Mengen über einen Zeitraum hinweg einnimmt. Genauso, wie es möglich ist, besser in dem zu werden, was man tut, indem man gelegentlich zusätzliche  Herausforderungen annimmt!"
     },
     "NOTIFICATION": {
         "OK": "Alles in Ordnung",
@@ -1240,15 +1240,15 @@
         "SECTION_NAME": "Team",
         "APP_TITLE": "TEAM - {{projectName}}",
         "PLACEHOLDER_INPUT_SEARCH": "Unter Anzeigenamen suchen...",
-        "COLUMN_MR_WOLF": "Herr Wolf",
+        "COLUMN_MR_WOLF": "Mr Wolf",
         "EXPLANATION_COLUMN_MR_WOLF": "Geschlossene Tickets",
-        "COLUMN_IOCAINE": "Locaine Trinker ",
-        "EXPLANATION_COLUMN_IOCAINE": "Locaine Dosen eingenommen ",
-        "COLUMN_CERVANTES": "Cervantes",
+        "COLUMN_IOCAINE": "toxisch Aufgaben ",
+        "EXPLANATION_COLUMN_IOCAINE": "toxische Aufgabe übernommen ",
+        "COLUMN_CERVANTES": "Diener des Wiki",
         "EXPLANATION_COLUMN_CERVANTES": "Wiki Seiten geändert",
         "COLUMN_BUG_HUNTER": "Bug-Jäger",
         "EXPLANATION_COLUMN_BUG_HUNTER": "Gemeldete Tickets ",
-        "COLUMN_NIGHT_SHIFT": "Nachtschicht",
+        "COLUMN_NIGHT_SHIFT": "Held der Arbeit",
         "EXPLANATION_COLUMN_NIGHT_SHIFT": "Aufgaben geschlossen",
         "COLUMN_TOTAL_POWER": "Gesamtleistung",
         "EXPLANATION_COLUMN_TOTAL_POWER": "Punktesumme",
