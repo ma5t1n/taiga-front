@@ -1,9 +1,9 @@
 //Table basic shared vars
 
-$column-width: 300px;
+$column-width: 360px;
 $column-flex: 1;
 $column-shrink: 0;
-$column-margin: 0 10px 0 0;
+$column-margin: 0 5px 0 0;
 
 %fold {
     .taskboard-task {
@@ -79,7 +79,6 @@ $column-margin: 0 10px 0 0;
         flex-shrink: $column-shrink;
         justify-content: space-between;
         margin: $column-margin;
-        max-width: $column-width;
         padding: .5rem 1rem;
         position: relative;
         text-transform: uppercase;
