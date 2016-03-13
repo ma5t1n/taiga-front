@@ -14,30 +14,29 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# File: attchments-full.directive.coffee
+# File: project-logo.service.spec.coffee
 ###
 
-bindOnce = @.taiga.bindOnce
+describe "tgProjectLogoService", ->
+    $provide = null
+    projectLogoService = null
 
-AttachmentsFullDirective = () ->
-    link = (scope, el, attrs, ctrl) ->
-        bindOnce scope, 'vm.objId', (value) ->
-            ctrl.loadAttachments()
+    _inject = ->
+        inject (_tgProjectLogoService_) ->
+            projectLogoService = _tgProjectLogoService_
 
-    return {
-        scope: {},
-        bindToController: {
-            type: "@",
-            objId: "=",
-            projectId: "=",
-            editPermission: "@"
-        },
-        controller: "AttachmentsFull",
-        controllerAs: "vm",
-        templateUrl: "components/attachments-full/attachments-full.html",
-        link: link
-    }
+    _setup = ->
+        _inject()
 
-AttachmentsFullDirective.$inject = []
+    beforeEach ->
+        window._version = '123'
+        module "taigaCommon"
 
-angular.module("taigaComponents").directive("tgAttachmentsFull", AttachmentsFullDirective)
+        _setup()
+
+    it "get default project logo", () ->
+
+        logo = projectLogoService.getDefaultProjectLogo('slug/slug', 2)
+
+        expect(logo.src).to.be.equal('/123/images/project-logos/project-logo-04.png');
+        expect(logo.color).to.be.equal('rgba( 152, 224, 168,  1 )');
