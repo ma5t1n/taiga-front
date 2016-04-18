@@ -100,7 +100,7 @@ helper.filtersCats = function() {
 };
 
 helper.filtersList = function() {
-    return $$('.filter-list a');
+    return $$('.filter-list .single-filter');
 };
 
 helper.selectFilter = async function(index) {
@@ -120,27 +120,27 @@ helper.backToFilters = function() {
 };
 
 helper.removeFilters = async function() {
-    let count = await $$('.filters-applied .icon-delete').count();
+    let count = await $$('.filters-applied .single-filter.selected').count();
 
     while(count) {
-        $$('.filters-applied .icon-delete').get(0).click();
+        $$('.single-filter.selected').get(0).$('.remove-filter').click();
 
-        count = await $$('.filters-applied .icon-delete').count();
+        count = await $$('.single-filter.selected').count();
     }
 };
 
 helper.getCustomFilters = function() {
-    return $$('.filter-list a[data-type="myFilters"]');
+    return $$('.filter-list div[data-type="myFilters"]');
 };
 
 helper.removeCustomFilters = async function() {
-    let count = await $$('.filter-list .icon-delete').count();
+    let count = await $$('.filter-list .remove-filter').count();
 
     while(count) {
-        $$('.filter-list .icon-delete').get(0).click();
+        $$('.filter-list .remove-filter').get(0).click();
 
         await utils.lightbox.confirm.ok();
 
-        count = await $$('.filter-list .icon-delete').count();
+        count = await $$('.filter-list .remove-filter').count();
     }
 };

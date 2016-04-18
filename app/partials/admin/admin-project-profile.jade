@@ -78,12 +78,26 @@ div.wrapper(
                         ng-model="project.tags"
                     )
 
+                fieldset(ng-if="project.owner.id != user.id")
+                    tg-admin-project-request-ownership.admin-project-profile-owner-actions(
+                        owner="project.owner",
+                        project-id="project.id"
+                    )
+                fieldset(ng-if="project.owner.id == user.id")
+                    tg-admin-project-change-owner.admin-project-profile-owner-actions(
+                        members="project.members.length"
+                        owner="project.owner",
+                        project-id="project.id"
+                        active-users="activeUsers"
+                    )
+
                 fieldset.looking-for-people
                     .looking-for-people-selector
                         span {{ 'ADMIN.PROJECT_PROFILE.RECRUITING' | translate }}
-                        svg.icon.icon-recruit
-                            use(xlink:href="#icon-recruit")
-                                title {{ 'ADMIN.PROJECT_PROFILE.RECRUITING_MESSAGE' | translate }}"
+                        tg-svg(
+                            svg-icon="icon-recruit",
+                            svg-title-translate="ADMIN.PROJECT_PROFILE.RECRUITING_MESSAGE"
+                        )
                         div.check
                             input(
                                 type="checkbox",
@@ -102,16 +116,13 @@ div.wrapper(
                             placeholder="{{ 'ADMIN.PROJECT_PROFILE.RECRUITING_PLACEHOLDER' | translate }}"
                         )
 
-                tg-admin-project-restrictions(
-                    can-be-private-project="canBePrivateProject"
-                    can-be-public-project="canBePublicProject"
-                )
+                tg-admin-project-restrictions(project="project")
 
                 fieldset
                     .project-privacy-settings
                         div.privacy-option
                             input.privacy-project(
-                                ng-disabled="!canBePublicProject.valid"
+                                ng-disabled="project.is_private && !project.is_private_extra_info.can_be_updated"
                                 type="radio"
                                 id="private-project"
                                 name="privacy-project"
@@ -122,7 +133,7 @@ div.wrapper(
 
                         div.privacy-option
                             input.privacy-project(
-                                ng-disabled="!canBePrivateProject.valid"
+                                ng-disabled="!project.is_private && !project.is_private_extra_info.can_be_updated"
                                 type="radio"
                                 id="public-project"
                                 name="privacy-project"
@@ -135,9 +146,10 @@ div.wrapper(
                         href="https://taiga.io/support/whats-the-difference-between-public-and-private-projects/"
                         target="_blank"
                     )
-                        svg.icon.icon-question
-                            use(xlink:href="#icon-question")
-                                title {{ 'ADMIN.PROJECT_PROFILE.PRIVATE_OR_PUBLIC' | translate }}
+                        tg-svg(
+                            svg-icon="icon-question",
+                            svg-title-translate="ADMIN.PROJECT_PROFILE.PRIVATE_OR_PUBLIC"
+                        )
                         span {{'ADMIN.PROJECT_PROFILE.PRIVATE_OR_PUBLIC' | translate }}
                 button.button-green.submit-button(
                     type="submit"

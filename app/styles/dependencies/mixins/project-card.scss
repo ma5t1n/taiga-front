@@ -25,7 +25,7 @@
         display: flex;
         margin-top: auto;
         svg {
-            @include svg-size(.8rem);
+            @include svg-size(.75rem);
             fill: currentColor;
             margin-right: .25rem;
         }
@@ -70,10 +70,5 @@
                 color: $primary-light;
             }
         }
-    }
-    .look-for-people {
-        @include svg-size(1rem);
-        fill: $gray-light;
-        margin: 0 .5rem;
     }
 }

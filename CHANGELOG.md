@@ -1,7 +1,16 @@
 # Changelog #
 
 
-## 2.0.0 ??? (unreleased)
+## 2.1.0 ??? (unreleased)
+
+### Features
+- ...
+
+### Misc
+- Lots of small and not so small bugfixes.
+
+
+## 2.0.0 Pulsatilla Patens (2016-04-04)
 
 ### Features
 - Ability to create url custom fields. (thanks to [@astagi](https://github.com/astagi)).
@@ -11,6 +20,7 @@
 - Add badge to project owners
 - Limit of user per project.
 - Redesign of the create project wizard
+- Transfer project ownership
 
 ### Misc
 - Lots of small and not so small bugfixes.

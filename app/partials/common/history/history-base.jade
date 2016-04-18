@@ -5,16 +5,21 @@ section.history
     ul.history-tabs
         <% if (commentsVisible) { %>
         li
-            a(href="#", class="active", data-section-class="history-comments")
-                svg.icon.icon-writer
-                    use(xlink:href="#icon-writer")
+            a(
+                href="",
+                class="active",
+                data-section-class="history-comments"
+            )
+                tg-svg(svg-icon="icon-writer")
                 span.tab-title(translate="COMMENTS.TITLE")
         <% } %>
         <% if (historyVisible) { %>
         li
-            a(href="#", data-section-class="history-activity")
-                svg.icon.icon-timeline
-                    use(xlink:href="#icon-timeline")
+            a(
+                href="",
+                data-section-class="history-activity"
+            )
+                tg-svg(svg-icon="icon-timeline")
                 span.tab-title(translate="ACTIVITY.TITLE")
         <% } %>
     <% } %>

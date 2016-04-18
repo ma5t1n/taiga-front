@@ -1,6 +1,5 @@
-require("babel/register")({
-    stage: 1
-});
+require("babel-register");
+require("babel-polyfill");
 
 var utils = require('./e2e/utils');
 
@@ -19,8 +18,12 @@ exports.config = {
         }
     },
     mochaOpts: {
-        timeout: 45000,
-        compilers: 'js:babel/register'
+        timeout: 55000,
+        compilers: 'js:babel-register',
+        require: 'babel-polyfill'
+    },
+    capabilities: {
+        'browserName': 'firefox'
     },
     // capabilities: {
     //     browserName: 'internet explorer',
@@ -44,64 +47,66 @@ exports.config = {
         discover: "e2e/suites/discover/*.e2e.js"
     },
     onPrepare: function() {
+        // disable by default because performance problems on IE
         // track mouse movements
-        var trackMouse = function() {
-          angular.module('trackMouse', []).run(function($document) {
+        // var trackMouse = function() {
+        //   angular.module('trackMouse', []).run(function($document) {
 
-            function addDot(ev) {
-              var color = 'black',
-                size = 6;
+        //     function addDot(ev) {
+        //       var color = 'black',
+        //         size = 6;
 
-              switch (ev.type) {
-                case 'click':
-                  color = 'red';
-                  break;
-                case 'dblclick':
-                  color = 'blue';
-                  break;
-                case 'mousemove':
-                  color = 'green';
-                  break;
-              }
+        //       switch (ev.type) {
+        //         case 'click':
+        //           color = 'red';
+        //           break;
+        //         case 'dblclick':
+        //           color = 'blue';
+        //           break;
+        //         case 'mousemove':
+        //           color = 'green';
+        //           break;
+        //       }
 
-              var dotEl = $('<div></div>')
-                .css({
-                  position: 'fixed',
-                  height: size + 'px',
-                  width: size + 'px',
-                  'background-color': color,
-                  top: ev.clientY,
-                  left: ev.clientX,
+        //       var dotEl = $('<div></div>')
+        //         .css({
+        //           position: 'fixed',
+        //           height: size + 'px',
+        //           width: size + 'px',
+        //           'background-color': color,
+        //           top: ev.clientY,
+        //           left: ev.clientX,
 
-                  'z-index': 9999,
+        //           'z-index': 9999,
 
-                  // make sure this dot won't interfere with the mouse events of other elements
-                  'pointer-events': 'none'
-                })
-                .appendTo('body');
+        //           // make sure this dot won't interfere with the mouse events of other elements
+        //           'pointer-events': 'none'
+        //         })
+        //         .appendTo('body');
 
-              setTimeout(function() {
-                dotEl.remove();
-              }, 1000);
-            }
+        //       setTimeout(function() {
+        //         dotEl.remove();
+        //       }, 1000);
+        //     }
 
-            $document.on({
-              click: addDot,
-              dblclick: addDot,
-              mousemove: addDot
-            });
+        //     $document.on({
+        //       click: addDot,
+        //       dblclick: addDot,
+        //       mousemove: addDot
+        //     });
 
-          });
-        };
-        browser.addMockModule('trackMouse', trackMouse);
+        //   });
+        // };
+        // browser.addMockModule('trackMouse', trackMouse);
 
         require('./e2e/capabilities.js');
 
-        browser.driver.manage().window().maximize();
+        browser.get(browser.params.glob.host);
 
-        browser.getCapabilities().then(function (cap) {
-            browser.browserName = cap.caps_.browserName;
-        });
+        browser.executeScript('window.sessionStorage.clear();');
+        browser.executeScript('window.localStorage.clear();');
+
+        browser.driver.manage().window().maximize();
 
         browser.get(browser.params.glob.host + 'login');
 
@@ -124,11 +129,6 @@ exports.config = {
         }, 10000)
         .then(function() {
             return utils.common.closeJoyride();
-        })
-        .then(function() {
-            return browser.getCapabilities();
-        }).then(function (cap) {
-            browser.browserName = cap.caps_.browserName;
         })
         .then(function() {
             return browser.get(browser.params.glob.host);

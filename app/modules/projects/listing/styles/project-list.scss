@@ -68,9 +68,13 @@
             .project-title,
             .private,
             .project-description,
-            .icon-badge,
-            .icon-drag {
+            .icon-badge {
                 opacity: .25;
+            }
+        }
+        &.blocked-project:hover {
+            .icon-drag {
+                opacity: 1;
             }
         }
         .list-itemtype-project-data-wrapper {
@@ -83,11 +87,13 @@
     }
     .drag {
         align-self: center;
-        fill: $gray-light;
-        height: 1.1rem;
-        margin-right: .5rem;
         opacity: 0;
-        transition: opacity .2s;
-        width: 1.1rem;
+        svg {
+            fill: $gray-light;
+            height: 1.1rem;
+            margin-right: .5rem;
+            transition: opacity .2s;
+            width: 1.1rem;
+        }
     }
 }

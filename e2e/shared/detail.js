@@ -21,8 +21,12 @@ shared.titleTesting = async function() {
     titleHelper.setTitle("New title " + date);
     titleHelper.save();
 
+    let notificationSuccess = await notifications.success.open();
+
+    expect(notificationSuccess).to.be.true;
+
     let newTitle = await titleHelper.getTitle();
-    expect(notifications.success.open()).to.be.eventually.true;
+
     expect(newTitle).to.be.not.equal(title);
 
     await notifications.success.close();
@@ -51,8 +55,9 @@ shared.descriptionTesting = async function() {
     descriptionHelper.save();
 
     let newDescription = await descriptionHelper.getInnerHtml();
+    let notificationOpen = notifications.success.open();
 
-    expect(notifications.success.open()).to.be.eventually.true;
+    expect(notificationOpen).to.be.equal.true;
     expect(newDescription).to.be.not.equal(description);
 
     await notifications.success.close();
@@ -105,7 +110,9 @@ shared.assignedToTesting = function() {
 
         await assignedTo.clear();
 
-        expect(assignedTo.isUnassigned()).to.be.eventually.true;
+        let isUnsassigned = assignedTo.isUnassigned();
+
+        expect(isUnsassigned).to.be.equal.true;
     });
 
     it('filter', async function () {
@@ -118,19 +125,18 @@ shared.assignedToTesting = function() {
 
         let names = await assignToLightbox.getNames();
 
-        await assignToLightbox.filter(names[0]);
+        await assignToLightbox.filter(names[1]);
 
         let newNames = await assignToLightbox.getNames();
 
-        expect(newNames).to.have.length(1);
+        expect(newNames).to.have.length.below(3);
 
         assignToLightbox.selectFirst();
 
         await assignToLightbox.waitClose();
-        await notifications.success.close();
     });
 
-    it('keyboard navigatin', async function() {
+    it('keyboard navigation', async function() {
         let assignedTo = detailHelper.assignedTo();
         let assignToLightbox = commonHelper.assignToLightbox();
 
@@ -202,12 +208,16 @@ shared.blockTesting = async function() {
 
     await blockLightboxHelper.waitClose();
 
-    expect($('.block-description').getText()).to.be.eventually.equal('This is a testing block reason');
-    expect($('.block-description').isDisplayed()).to.be.eventually.true;
+    let descriptionText = await $('.block-description').getText();
+    expect(descriptionText).to.be.equal('This is a testing block reason');
+
+    let isDisplayed = $('.block-description').isDisplayed();
+    expect(isDisplayed).to.be.equal.true;
 
     blockHelper.unblock();
 
-    expect($('.block-description').isDisplayed()).to.be.eventually.false;
+    isDisplayed = $('.block-description').isDisplayed();
+    expect(isDisplayed).to.be.equal.false;
 
     await notifications.success.close();
 }
@@ -333,7 +343,6 @@ shared.watchersTesting = function() {
 
         await watchersLightboxHelper.selectFirst();
         await watchersLightboxHelper.waitClose();
-        await notifications.success.close();
     });
 
     it('keyboard navigatin', async function() {
@@ -367,7 +376,9 @@ shared.customFields = function(typeIndex) {
     before(async function() {
         let url = await browser.getCurrentUrl();
         let rootUrl = await commonUtil.getProjectUrlRoot();
-        browser.get(rootUrl + '/admin/project-values/custom-fields');
+
+        await browser.get(rootUrl + '/admin/project-values/custom-fields');
+        await browser.sleep(2000);
 
         await customFieldsHelper.create(typeIndex, 'detail-test-custom-fields-text', 'desc1', 1);
 
@@ -387,13 +398,12 @@ shared.customFields = function(typeIndex) {
     it('text create', async function() {
         let customFields = customFieldsHelper.getDetailFields();
 
-        // await browser.sleep(4000);
         let count = await customFields.count();
 
         let textField = customFields.get(count - 2);
 
         textField.$('input').sendKeys('test text');
-        textField.$('.icon-floppy').click();
+        textField.$('.js-save-description').click();
 
         // debounce
         await browser.sleep(2000);
@@ -409,10 +419,10 @@ shared.customFields = function(typeIndex) {
 
         let textField = customFields.get(count - 2);
 
-        textField.$('.icon-edit').click();
+        textField.$('.js-edit-description').click();
 
         textField.$('input').sendKeys('test text edit');
-        textField.$('.icon-floppy').click();
+        textField.$('.js-save-description').click();
 
         // debounce
         await browser.sleep(2000);
@@ -429,7 +439,7 @@ shared.customFields = function(typeIndex) {
         let textField = customFields.get(count - 1);
 
         textField.$('textarea').sendKeys('test text2');
-        textField.$('.icon-floppy').click();
+        textField.$('.js-save-description').click();
 
         // debounce
         await browser.sleep(2000);
@@ -447,7 +457,7 @@ shared.customFields = function(typeIndex) {
 
         textField.$('.icon-edit').click();
         textField.$('textarea').sendKeys('test text2 edit');
-        textField.$('.icon-floppy').click();
+        textField.$('.js-save-description').click();
 
         // // debounce
         await browser.sleep(2000);

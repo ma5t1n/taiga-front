@@ -13,21 +13,32 @@ describe('modules', function() {
         await utils.common.waitLoader();
 
         utils.common.takeScreenshot('admin', 'project-modules');
-    });
 
-    it('disable module', async function() {
-        let functionalities = $$('.functionality');
-
+        // enable if the first module is disable
+        let functionalities = $$('.module');
         let functionality = functionalities.get(0);
 
-        let label = functionality.$('label');
+        let input = functionality.$('.check input');
 
         browser.actions()
-            .mouseMove(label)
+            .mouseMove(input)
             .click()
             .perform();
 
-        $('button[type="submit"]').click();
+        await utils.notifications.success.open();
+    });
+
+    it('disable module', async function() {
+        let functionalities = $$('.module');
+
+        let functionality = functionalities.get(0);
+
+        let input = functionality.$('.check input');
+
+        browser.actions()
+            .mouseMove(input)
+            .click()
+            .perform();
 
         let active = await utils.common.hasClass(functionality, 'active');
 
@@ -38,46 +49,50 @@ describe('modules', function() {
     });
 
     it('enable module', async function() {
-        let functionalities = $$('.functionality');
+        let functionalities = $$('.module');
 
         let functionality = functionalities.get(0);
 
-        let label = functionality.$('label');
+        let input = functionality.$('.check input');
 
         browser.actions()
-            .mouseMove(label)
+            .mouseMove(input)
             .click()
             .perform();
 
-        $('button[type="submit"]').click();
+        let notificationSuccess = await utils.notifications.success.open();
+
+        expect(notificationSuccess).to.be.equal(true);
 
         let active = await utils.common.hasClass(functionality, 'active');
 
-        expect(utils.notifications.success.open()).to.be.eventually.equal(true);
         expect(active).to.be.true;
 
         await utils.notifications.success.close();
     });
 
     it('enable videoconference', async function() {
-        let functionality = $$('.functionality').get(4);
+        let functionality = $$('.module').get(4);
 
-        let label = functionality.$('label');
+        let input = functionality.$('.check input');
 
         browser.actions()
-            .mouseMove(label)
+            .mouseMove(input)
             .click()
             .perform();
 
         let videoconference = functionality.$$('select').get(0);
 
-        videoconference.$(`option:nth-child(1)`).click();
+        videoconference.$(`option:nth-child(2)`).click();
 
-        let salt = functionality.$$('select').get(0);
+        let salt = $('#videoconference-prefix');
 
         salt.sendKeys('abccceee');
 
-        $('button[type="submit"]').click();
-        expect(utils.notifications.success.open()).to.be.eventually.equal(true);
+        functionality.$('.icon-save').click();
+
+        let notificationSuccess = await utils.notifications.success.open();
+
+        expect(notificationSuccess).to.be.equal(true);
     });
 });

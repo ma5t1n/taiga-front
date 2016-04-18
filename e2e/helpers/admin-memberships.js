@@ -7,7 +7,7 @@ helper.openNewMemberLightbox = function() {
 };
 
 helper.getNewMemberLightbox = function() {
-    let el = $('div[tg-lb-create-members]');
+    let el = $('div[tg-lb-add-members]');
 
     let obj = {
         el: el,
@@ -22,10 +22,10 @@ helper.getNewMemberLightbox = function() {
             el.$('.add-fieldset').click();
         },
         getRows: function() {
-            return el.$$('.add-member-wrapper');
+            return el.$$('.add-single-member');
         },
         deleteRow: function(index) {
-            el.$$('.delete-fieldset').get(index).click();
+            el.$$('.remove-fieldset').get(index).click();
         },
         submit: function() {
             el.$('.submit-button').click();
@@ -35,8 +35,28 @@ helper.getNewMemberLightbox = function() {
     return obj;
 };
 
+helper.leavingProjectWarningLb = function() {
+    return $('div[tg-lightbox-leave-project-warning]');
+};
+
+helper.isLeaveProjectWarningOpen = function() {
+    return helper.leavingProjectWarningLb().isPresent();
+};
+
 helper.getMembers = function() {
     return $$('.admin-membership-table .row');
+};
+
+helper.getOwner = function() {
+    return helper.getMembers().filter(async (member) => {
+        return !!await member.$$('.icon-badge').count();
+    }).first();
+};
+
+helper.excludeOwner = function(members) {
+    return members.filter(async (member) => {
+        return !await member.$$('.icon-badge').count();
+    });
 };
 
 helper.isActive = function(elm) {

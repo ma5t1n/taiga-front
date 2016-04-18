@@ -26,10 +26,8 @@ common.hasClass = async function (element, cls) {
     return classes.split(' ').indexOf(cls) !== -1;
 };
 
-common.isBrowser = async function(browserName) {
-    let cap = await browser.getCapabilities();
-
-    return browserName === cap.caps_.browserName;
+common.isBrowser = function(browserName) {
+    return browserName === browser.browserName;
 };
 
 common.browserSkip = function(browserName, name, fn) {
@@ -46,6 +44,16 @@ common.browserSkip = function(browserName, name, fn) {
             return it.skip.call(this, name, fn);
         }
     }
+};
+
+common.waitHref = async function(el) {
+    await browser.wait(async function() {
+        let href = await el.getAttribute('href');
+
+        return (href.length > 1 && href !== browser.params.glob.host + "#");
+     }, 5000);
+
+    return el.getAttribute('href');
 };
 
 common.link = async function(el) {
@@ -70,11 +78,7 @@ common.link = async function(el) {
         .mouseMove({x: 10, y: 10})
         .perform();
 
-    await browser.wait(async function() {
-        let href = await el.getAttribute('href');
-
-        return (href.length > 1 && href !== browser.params.glob.host + "#");
-     }, 5000);
+    await common.waitHref(el);
 
     await browser
         .actions()
@@ -102,8 +106,7 @@ common.waitLoader = function () {
 common.takeScreenshot = async function (section, filename) {
     await common.waitRequestAnimationFrame();
 
-    let cap = await browser.getCapabilities();
-    let browserName = cap.caps_.browserName;
+    let browserName = browser.browserName;
 
     let screenshotsFolder = __dirname + "/../screenshots/" + browserName + "/";
     let dir = screenshotsFolder + section + "/";
@@ -368,8 +371,12 @@ common.uploadFile = async function(inputFile, filePath) {
     await browser.executeScript(toggleInput, inputFile.getWebElement());
 };
 
+common.getMenu = function() {
+    return $('div[tg-dropdown-user]');
+};
+
 common.topMenuOption = async function(option) {
-    let menu = $('div[tg-dropdown-user]');
+    let menu = common.getMenu();
     let menuOption = menu.$$('li a').get(option);
     browser.actions().mouseMove(menu).perform();
     return browser.actions().mouseMove(menuOption).click().perform();
@@ -421,12 +428,57 @@ common.uploadImagePath = function() {
     }
 };
 
-common.closeJoyride = function() {
-    browser.waitForAngular();
-    $('.introjs-skipbutton').isPresent().then((present) => {
-        if (present) {
-            $('.introjs-skipbutton').click();
-            browser.sleep(600);
+common.closeJoyride = async function() {
+    await browser.waitForAngular();
+
+    let present = await $('.introjs-skipbutton').isPresent();
+
+    if (present) {
+        $('.introjs-skipbutton').click();
+        await browser.sleep(600);
+    }
+};
+
+common.createProject = async function(members = []) {
+    var createProject = require('../helpers').createProject;
+    var notifications = require('./notifications');
+
+    browser.get(browser.params.glob.host + 'projects/');
+    await common.waitLoader();
+
+    let lb = createProject.createProjectLightbox();
+
+    createProject.openWizard();
+
+    await lb.waitOpen();
+
+    lb.name().sendKeys('aaa');
+
+    lb.description().sendKeys('bbb');
+
+    await lb.submit();
+
+    if (members.length) {
+        var adminMembershipsHelper = require('../helpers').adminMemberships;
+
+        let url = await browser.getCurrentUrl();
+        url = url.split('/');
+        url = browser.params.glob.host + '/project/' + url[4] + '/admin/memberships';
+
+        browser.get(url);
+        await common.waitLoader();
+
+        let newMemberLightbox = adminMembershipsHelper.getNewMemberLightbox();
+        adminMembershipsHelper.openNewMemberLightbox();
+
+        await newMemberLightbox.waitOpen();
+
+        for(var i = 0; i < members.length; i++) {
+            newMemberLightbox.newEmail(members[i]);
         }
-    });
+
+        newMemberLightbox.submit();
+
+        await newMemberLightbox.waitClose();
+    }
 };

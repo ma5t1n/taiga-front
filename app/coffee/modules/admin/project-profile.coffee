@@ -69,10 +69,7 @@ class ProjectProfileController extends mixOf(taiga.Controller, taiga.PageMixin)
             description = @scope.project.description
             @appMetaService.setAll(title, description)
 
-            @scope.canBePrivateProject = @.currentUserService.canBePrivateProject(@scope.project.id)
-            @scope.canBePublicProject = @.currentUserService.canBePublicProject(@scope.project.id)
-
-            @scope.isPrivateProject = @scope.project.is_private
+            @.fillUsersAndRoles(@scope.project.members, @scope.project.roles)
 
         promise.then null, @.onInitialDataError.bind(@)
 
@@ -231,7 +228,7 @@ ProjectModulesDirective = ($repo, $confirm, $loading, projectService) ->
             event.preventDefault()
             submit()
 
-        $el.on "click", ".icon-save", (event) ->
+        $el.on "click", ".save", (event) ->
             event.preventDefault()
             submit()
 
@@ -534,10 +531,55 @@ module.directive('tgProjectLogoModel', ['$parse', ProjectLogoModelDirective])
 AdminProjectRestrictionsDirective = () ->
     return {
         scope: {
-            "canBePrivateProject": "=",
-            "canBePublicProject": "="
+            "project": "="
         },
         templateUrl: "admin/admin-project-restrictions.html"
     }
 
 module.directive('tgAdminProjectRestrictions', [AdminProjectRestrictionsDirective])
+
+AdminProjectRequestOwnershipDirective = (lightboxFactory) ->
+    return {
+        link: (scope) ->
+            scope.requestOwnership = () ->
+                lightboxFactory.create("tg-lb-request-ownership", {
+                    "class": "lightbox lightbox-request-ownership"
+                }, {
+                    projectId: scope.projectId
+                })
+
+        scope: {
+            "projectId": "=",
+            "owner": "="
+        },
+        templateUrl: "admin/admin-project-request-ownership.html"
+    }
+
+module.directive('tgAdminProjectRequestOwnership', ["tgLightboxFactory", AdminProjectRequestOwnershipDirective])
+
+AdminProjectChangeOwnerDirective = (lightboxFactory) ->
+    return {
+        link: (scope) ->
+            scope.changeOwner = () ->
+                lightboxFactory.create("tg-lb-change-owner", {
+                    "class": "lightbox lightbox-select-user",
+                    "project-id": "projectId",
+                    "active-users": "activeUsers",
+                    "current-owner-id": "currentOwnerId"
+                }, {
+                    projectId: scope.projectId,
+                    activeUsers: scope.activeUsers,
+                    currentOwnerId: scope.owner.id,
+                    members: scope.members
+                })
+
+        scope: {
+            "activeUsers": "="
+            "projectId": "="
+            "owner": "="
+            "members": "="
+        },
+        templateUrl: "admin/admin-project-change-owner.html"
+    }
+
+module.directive('tgAdminProjectChangeOwner', ["tgLightboxFactory", AdminProjectChangeOwnerDirective])

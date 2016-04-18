@@ -22,33 +22,31 @@ describe('create-delete project', function() {
         createProject.openWizard();
 
         await lb.waitOpen();
+
+        utils.common.takeScreenshot('project-wizard', 'create-project');
     });
 
-    it('create - step 1', async function() {
-        utils.common.takeScreenshot('project-wizard', 'step1');
-
-        await lb.next();
-    });
-
-    it('create - step 2 errors', async function() {
-        utils.common.takeScreenshot('project-wizard', 'step2');
+    it('create project error', async function() {
+        utils.common.takeScreenshot('project-wizard', 'create-project-errors');
 
         await lb.submit();
-
-        utils.common.takeScreenshot('project-wizard', 'step2-error');
 
         let errors = await lb.errors().count();
 
         expect(errors).to.be.equal(2);
     });
 
-    it('create - step 2', async function() {
+    it('create project', async function() {
+        let originalUrl = await browser.getCurrentUrl();
+
         lb.name().sendKeys('aaa');
         lb.description().sendKeys('bbb');
 
         await lb.submit();
 
-        expect(utils.notifications.success.open()).to.be.eventually.true;
+        let projectUrl = await browser.getCurrentUrl();
+
+        expect(projectUrl).not.to.be.equal(originalUrl);
     });
 
     it('delete', async function() {

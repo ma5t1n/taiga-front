@@ -57,9 +57,13 @@
         }
         .requirement,
         .iocaine {
+            vertical-align: middle;
             &:hover {
                 background: $primary-light;
                 border: 1px solid $primary;
+            }
+            svg {
+                @include svg-size(.75rem);
             }
         }
 
@@ -536,5 +540,20 @@
             margin: .1rem 0;
             min-width: 100%;
         }
+    }
+}
+
+.lightbox-import-error {
+    text-align: center;
+    p {
+        a {
+            color: $primary;
+        }
+    }
+    .content {
+        width: 500px;
+    }
+    h2 {
+        margin-top: 1rem;
     }
 }
