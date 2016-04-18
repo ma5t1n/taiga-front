@@ -98,7 +98,7 @@ BacklogSprintHeaderDirective = ($navUrls, $template, $compile, $translate) ->
 
             start = moment(sprint.estimated_start).format(prettyDate)
             finish = moment(sprint.estimated_finish).format(prettyDate)
-            estimatedDateRange = "#{start}-#{finish}"
+            estimatedDateRange = "#{start} - #{finish}"
 
             ctx = {
                 name: sprint.name

@@ -37,7 +37,7 @@ DateRangeDirective = ($translate) ->
         prettyDate = $translate.instant("BACKLOG.SPRINTS.DATE")
         initDate = moment(first).format(prettyDate)
         endDate = moment(second).format(prettyDate)
-        $el.html("#{initDate}-#{endDate}")
+        $el.html("#{initDate} - #{endDate}")
 
     link = ($scope, $el, $attrs) ->
         [first, second] = $attrs.tgDateRange.split(",")

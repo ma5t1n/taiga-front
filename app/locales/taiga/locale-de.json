@@ -5,8 +5,8 @@
         "OR": "or",
         "LOADING": "Wird geladen...",
         "LOADING_PROJECT": "Projekt wird geladen...",
-        "DATE": "DD MMM YYYY",
-        "DATETIME": "DD MMM YYYY HH:mm",
+        "DATE": "DD.MM.YYYY",
+        "DATETIME": "DD.MM.YYYY HH:mm",
         "SAVE": "Speichern",
         "CANCEL": "Abbrechen",
         "ACCEPT": "Akzeptieren",
@@ -924,7 +924,7 @@
     },
     "ACTIVITY": {
         "SHOW_ACTIVITY": "Aktivitäten zeigen",
-        "DATETIME": "DD MMM YYYY HH:mm",
+        "DATETIME": "DD.MM.YYYY HH:mm",
         "SHOW_MORE": "+ Vorherige Einträge zeigen ({{showMore}} vorhanden)",
         "TITLE": "Aktivität",
         "REMOVED": "entfernt",
@@ -1042,7 +1042,7 @@
         },
         "SPRINTS": {
             "TITLE": "SPRINTS",
-            "DATE": "TT MMM JJJJ",
+            "DATE": "DD.MM.YYYY",
             "LINK_TASKBOARD": "Sprint Taskboard",
             "TITLE_LINK_TASKBOARD": "Gehe zu Taskboard von \"{{name}}\"",
             "NUMBER_SPRINTS": "<br/>Sprints",
@@ -1327,7 +1327,7 @@
     "WIKI": {
         "PAGE_TITLE": "{{wikiPageName}} - Wiki - {{projectName}}",
         "PAGE_DESCRIPTION": "Letzte Bearbeitung am {{lastModifiedDate}} ({{totalEditions}} Gesamtzahl der Bearbeitungen) Inhalt: {{ wikiPageContent }}",
-        "DATETIME": "TT MMM JJJJ hh:mm",
+        "DATETIME": "DD.MM.YYYY hh:mm",
         "PLACEHOLDER_PAGE": "Schreiben Sie Ihre Wiki Seite",
         "REMOVE": "Diese Wiki Seite entfernen",
         "DELETE_LIGHTBOX_TITLE": "Wiki Seite löschen",
